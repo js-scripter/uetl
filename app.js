@@ -1,6 +1,6 @@
 const express = require('express')
 const multer  = require('multer')
-const upload = multer({ dest: 'uploads/' })
+// const upload = multer({ dest: 'uploads/' })
 const appRoot = require("app-root-path");
 const path = require('path');
 const scheduler =require('./scheduler')
@@ -10,6 +10,17 @@ const app = express()
 // cron job to run asynchronously, non blobking way, every 1 minute 
 // to check for new file and upload it to the DB
 scheduler.scheduleETL();
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/')
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname)) //Appending extension
+  }
+})
+
+var upload = multer({ storage: storage });
 
 app.get("/", (request, response) => {
         let pathUri = `${appRoot}/client/home.html`;
