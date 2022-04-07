@@ -1,4 +1,3 @@
-// import dbconn  from "../connections/dbconn";
 const schedule = require('node-schedule');
 const randomFile = require('select-random-file')
 const fs = require('fs');
@@ -15,7 +14,7 @@ module.exports.scheduleETL = async function (msg) {
     //we can take schedule value from config which is best practice but here we are hardcoding
     const job = schedule.scheduleJob('*/1 * * * *', async function(){
 
-        // randomlypick files for processing
+        // randomly pick files for processing
         randomFile(dir, (err, file) => {
             console.log('selected file '+file)
             // if directory is empty and no file found then return
@@ -35,7 +34,7 @@ module.exports.scheduleETL = async function (msg) {
                 age = json[i]["age"]
                 zip = json[i]["zip"]
                 registered = json[i]["registered"]
-                console.log(first_name + '-'+last_name + '-'+email + '-'+gender + '-')
+                // console.log(first_name + '-'+last_name + '-'+email + '-'+gender + '-')
                 pool.query('INSERT INTO users (first_name, last_name, email, gender, age,zip,registered) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *', [first_name, last_name, email, gender, age,zip,registered], (error, results) => {
                     if (error) {
                       console.log(error)
@@ -51,7 +50,7 @@ module.exports.scheduleETL = async function (msg) {
                     console.log(err);
                     return
                 }
-                console.log("File is deleted.");
+                console.log(pathUri+file + " File is deleted.");
             });
         })
     })
