@@ -2,36 +2,27 @@ const express = require('express')
 const multer  = require('multer')
 const upload = multer({ dest: 'uploads/' })
 const appRoot = require("app-root-path");
-var path = require('path');
+const path = require('path');
 const port = process.env.PORT || 3000
+const scheduler =require('./scheduler')
 
 const app = express()
 
-// const bookFilesStorage = multer.diskStorage({
-//     // Destination to store image     
-//     destination: 'images', 
-//       filename: (req, file, cb) => {
-//           cb(null, file.fieldname + '_' + Date.now() 
-//              + path.extname(file.originalname))
-//             // file.fieldname is name of the field (image)
-//             // path.extname get the uploaded file extension
-//     }
-// });
+// cron job to run every 1 minute to check for new file and upload it to the DB
+scheduler.scheduleUpload();
 
-app.get("/", (request, response) => 
-    {
-        // console.log(__dirname);
-        // response.sendFile(path.resolve(__dirname + "../../../client/html/home.html"));
+app.get("/", (request, response) => {
         let pathUri = `${appRoot}/client/home.html`;
         response.sendFile(path.resolve(pathUri));
     }
 )
 
-app.post('/uploadBooks', upload.single('books'), function (req, res, next) {
+app.post('/uploadBooks', upload.single('books'), (req, res, next)=> {
   // req.file is the `avatar` file
   // req.body will hold the text fields, if there were any
   console.log(req.file)
-  res.send('file uploaded')
+  let pathUri = `${appRoot}/client/uploadStatus.html`;
+  response.sendFile(path.resolve(pathUri));
 })
 
 
