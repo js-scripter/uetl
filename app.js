@@ -29,11 +29,6 @@ app.get("/", (req, res) => {
     res.sendFile(path.resolve(pathUri));
 })
 
-// app.get("/uploadStatus", (req, res) => {
-//     let pathUri = `${appRoot}/client/uploadStatus.html`;
-//     res.sendFile(path.resolve(pathUri));
-// })
-
 app.get("/files", (req, res) => {
 	console.log('API call to get file list')
 	pool.query('SELECT * FROM file_master ORDER BY file_id DESC', (error, results) => {

@@ -32,7 +32,7 @@ var ViewModel = function () {
             if(data && data.length>0){
                 self.detail(data);    
             }else{
-                self.detail([{first_name:'File processing....'}])
+                alert('File processing try after some time')
             }
             
             console.log('self.detail '+ JSON.stringify(self.detail()));
