@@ -1,6 +1,5 @@
 const express = require('express')
 const multer  = require('multer')
-// const upload = multer({ dest: 'uploads/' })
 const appRoot = require("app-root-path");
 const path = require('path');
 const scheduler =require('./scheduler')
@@ -11,6 +10,7 @@ const app = express()
 // to check for new file and upload it to the DB
 scheduler.scheduleETL();
 
+// configure multer : upload dir. path and function to assign file name
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'uploads/')
@@ -23,10 +23,9 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage });
 
 app.get("/", (request, response) => {
-        let pathUri = `${appRoot}/client/home.html`;
-        response.sendFile(path.resolve(pathUri));
-    }
-)
+    let pathUri = `${appRoot}/client/home.html`;
+    response.sendFile(path.resolve(pathUri));
+})
 
 app.post('/uploadBooks', upload.single('books'), (req, res, next)=> {
   // req.file is the `books` file
