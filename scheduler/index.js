@@ -2,6 +2,7 @@ const schedule = require('node-schedule');
 const randomFile = require('select-random-file')
 const fs = require('fs');
 const csvToJson = require('convert-csv-to-json');
+const path = require('path');
 const dir = 'uploads/'
 const pool = require('../db.js')
 
@@ -32,7 +33,8 @@ module.exports.scheduleETL = async function (msg) {
                 age = json[i]["age"]
                 zip = json[i]["zip"]
                 registered = json[i]["registered"]
-                pool.query('INSERT INTO users (first_name, last_name, email, gender, age,zip,registered) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *', [first_name, last_name, email, gender, age,zip,registered], (error, results) => {
+                file_id = path.parse(file).name;
+                pool.query('INSERT INTO users (first_name, last_name, email, gender, age,zip,registered,file_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *', [first_name, last_name, email, gender, age,zip,registered, file_id], (error, results) => {
                     if (error) {
                       console.log(error)
                     }

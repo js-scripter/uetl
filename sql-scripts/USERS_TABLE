@@ -1,0 +1,11 @@
+CREATE TABLE users (
+  ID SERIAL PRIMARY KEY,
+  first_name VARCHAR(30),
+  last_name VARCHAR(30),
+  email VARCHAR(30),
+  gender CHAR(6),
+  age smallint,
+  zip smallint,
+  registered boolean,
+  file_id BIGINT
+)

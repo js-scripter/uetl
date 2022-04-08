@@ -1,0 +1,3 @@
+CREATE TABLE file_master (
+  file_id BIGINT PRIMARY KEY
+)
